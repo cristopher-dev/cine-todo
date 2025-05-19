@@ -32,9 +32,10 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onDeleteMovie, onEditMovi
         <li key={movie.id} className="movie-item">
           {editingMovie && editingMovie.id === movie.id ? (
             <MovieForm 
-              onAddMovie={handleSaveEdit} 
-              initialData={{ title: movie.title, year: movie.year, poster: movie.poster }} 
+              onMovieSubmit={handleSaveEdit} 
+              initialData={movie} 
               isEditMode 
+              onCancelEdit={() => setEditingMovie(null)}
             />
           ) : (
             <>

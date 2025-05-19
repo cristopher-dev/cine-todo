@@ -11,6 +11,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null); // Estado para la película en edición
 
+  // useEffect para localStorage (sin cambios)
   useEffect(() => {
     console.log("Intentando cargar películas desde localStorage...");
     const storedMovies = localStorage.getItem('movies');
@@ -21,22 +22,21 @@ function App() {
         setMovies(parsedMovies);
       } catch (error) {
         console.error("Error al parsear películas desde localStorage:", error);
-        // Opcional: limpiar el item corrupto para prevenir errores futuros
         // localStorage.removeItem('movies');
       }
     } else {
       console.log("No se encontraron películas en localStorage.");
     }
-    setIsLoaded(true); // Indicar que el intento de carga ha finalizado
+    setIsLoaded(true);
   }, []);
 
   useEffect(() => {
-    if (isLoaded) { // Solo guardar en localStorage si la carga inicial se ha intentado
+    if (isLoaded) {
       console.log("Intentando guardar películas en localStorage:", movies);
       localStorage.setItem('movies', JSON.stringify(movies));
       console.log("Películas guardadas en localStorage.");
     }
-  }, [movies, isLoaded]); // Ejecutar cuando movies o isLoaded cambie
+  }, [movies, isLoaded]);
 
   const addMovie = useCallback((movie: Omit<Movie, 'id'>) => {
     setMovies(prevMovies => [...prevMovies, { ...movie, id: crypto.randomUUID() }]);
@@ -46,30 +46,31 @@ function App() {
     setMovies(prevMovies => prevMovies.filter(movie => movie.id !== id));
   }, []);
 
-  // Renombrada para evitar conflicto con la prop de MovieList y para claridad
   const editMovieInternal = useCallback((updatedMovie: Movie) => {
     setMovies(prevMovies => prevMovies.map(movie => movie.id === updatedMovie.id ? updatedMovie : movie));
   }, []);
 
   // Maneja el envío del formulario tanto para agregar como para editar
-  const handleFormSubmit = useCallback((movieData: Omit<Movie, 'id'>) => {
+  // Se elimina useCallback para probar si resuelve el problema de 'undefined'
+  const handleFormSubmit = (movieData: Omit<Movie, 'id'>) => {
     if (editingMovie) {
       editMovieInternal({ ...movieData, id: editingMovie.id });
       setEditingMovie(null); // Sale del modo edición, resetea el formulario vía 'key'
     } else {
       addMovie(movieData);
     }
-  }, [editingMovie, addMovie, editMovieInternal]);
+  };
 
   // Inicia el modo edición para una película
   const handleStartEdit = useCallback((movie: Movie) => {
     setEditingMovie(movie);
-  }, [setEditingMovie]);
+  }, [setEditingMovie]); // setEditingMovie es estable
 
   // Cancela el modo edición
-  const handleCancelEdit = useCallback(() => {
+  // Se elimina useCallback para probar si resuelve el problema de 'undefined'
+  const handleCancelEdit = () => {
     setEditingMovie(null); // Sale del modo edición, resetea el formulario vía 'key'
-  }, [setEditingMovie]);
+  };
 
   const filteredMovies = movies.filter(movie => 
     movie.title.toLowerCase().includes(searchTerm.toLowerCase())
