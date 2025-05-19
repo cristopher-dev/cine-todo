@@ -73,7 +73,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>{editingMovie ? 'Editar Película' : 'Mis Películas Favoritas'}</h1>
+      <h1>{editingMovie ? 'Editar Película' : 'CineTODO'}</h1>
       <MovieForm
         key={editingMovie ? editingMovie.id : 'add-form'}
         onMovieSubmit={handleFormSubmit}
