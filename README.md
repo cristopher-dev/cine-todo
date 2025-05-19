@@ -20,10 +20,79 @@ Esta es una aplicación de React que permite visualizar y organizar tus películ
   - Manejo de errores básicos (validación de campos vacíos, formato de año, URL de póster).
   - Animaciones sutiles (hover en items de película, transiciones en botones).
 
+## Pruebas Unitarias con Jest y React Testing Library
+
+Se ha implementado un conjunto de pruebas unitarias utilizando Jest y React Testing Library para validar la funcionalidad y comportamiento de los componentes de la aplicación. Estas pruebas aseguran que el código funcione como se espera y facilitan la detección temprana de errores durante el desarrollo.
+
+### Configuración de Pruebas
+
+- **Jest**: Framework de pruebas para JavaScript que proporciona la estructura principal para nuestras pruebas.
+- **React Testing Library**: Utilizado para renderizar y probar componentes de React en un entorno de pruebas.
+- **Jest DOM**: Proporciona matchers adicionales específicos para DOM para hacer las aserciones más expresivas y claras.
+
+La configuración de Jest se encuentra en los siguientes archivos:
+- `jest.config.cjs`: Configuración principal de Jest
+- `jest.setup.ts`: Configuración adicional y extensiones para las pruebas
+- `tsconfig.test.json`: Configuración de TypeScript específica para pruebas
+
+### Estructura de Pruebas
+
+Las pruebas se organizan en la carpeta `src/__tests__/` y siguen una estructura similar a los componentes de la aplicación:
+
+- `simple.test.tsx`: Pruebas básicas para verificar la configuración correcta de Jest
+- `MovieList.test.tsx`: Pruebas para el componente MovieList
+- `MovieForm.test.tsx`: Pruebas para el componente MovieForm
+- `App.simple.test.tsx`: Pruebas simplificadas para el componente principal App
+
+### Pruebas Implementadas
+
+#### Componente MovieList
+
+- Verifica que se muestre un mensaje cuando no hay películas
+- Comprueba que la lista de películas se renderice correctamente
+- Valida que se llame a la función de eliminar cuando se hace clic en el botón "Eliminar"
+- Verifica que se llame a la función de editar cuando se hace clic en el botón "Editar"
+
+#### Componente MovieForm
+
+- Comprueba que el formulario se renderice correctamente con campos vacíos
+- Verifica que el formulario se inicialice con datos cuando se está en modo de edición
+- Prueba la validación de campos obligatorios
+- Valida el formato del año (debe ser un número de 4 dígitos)
+- Comprueba que el formulario envíe los datos correctamente cuando se completa con información válida
+- Verifica que se llame a la función de cancelar cuando se hace clic en el botón "Cancelar"
+
+#### Componente App
+
+- Prueba que los elementos principales de la interfaz se rendericen correctamente
+- Verifica la interacción con localStorage para guardar y recuperar películas
+- Comprueba la funcionalidad de filtrado por búsqueda
+- Valida la funcionalidad de ordenamiento de películas
+
+### Cómo Ejecutar las Pruebas
+
+Para ejecutar todas las pruebas:
+
+```bash
+npm test
+```
+
+Para ejecutar pruebas específicas:
+
+```bash
+npm test -- --testPathPattern=MovieList
+```
+
+Para ejecutar las pruebas en modo de observación (que actualiza automáticamente cuando se modifican los archivos):
+
+```bash
+npm run test:watch
+```
+
 ## Mejoras Futuras (con más tiempo)
 
 - **Validación más robusta:** Implementar una librería de validación de esquemas (ej. Zod o Yup) para el formulario, permitiendo reglas más complejas y mensajes de error más detallados.
-- **Pruebas Unitarias e Integración:** Agregar pruebas utilizando Jest y React Testing Library para asegurar la fiabilidad de los componentes y la lógica de la aplicación.
+- **Ampliación de Pruebas:** Añadir pruebas de integración y pruebas end-to-end utilizando herramientas como Cypress para evaluar flujos completos de usuario.
 - **Optimización del rendimiento:** Para listas muy grandes, se podría virtualizar la lista de películas para mejorar el rendimiento del renderizado.
 - **Mejoras de Accesibilidad (A11y):** Realizar una auditoría de accesibilidad más exhaustiva y aplicar mejoras (ej. atributos ARIA adicionales, mejor contraste, navegación por teclado completa).
 - **Gestión de estado más avanzada:** Para funcionalidades más complejas o un equipo más grande, integrar una solución de manejo de estado global más robusta.
@@ -54,6 +123,24 @@ Esta es una aplicación de React que permite visualizar y organizar tus películ
    ```
 
    Esto iniciará la aplicación y generalmente la abrirá en `http://localhost:5173` (o un puerto similar) en tu navegador.
+
+5. **Ejecutar las pruebas unitarias:**
+
+   ```bash
+   npm test
+   ```
+
+   Para ejecutar pruebas específicas:
+
+   ```bash
+   npm test -- --testPathPattern=MovieList
+   ```
+
+   Para ejecutar pruebas en modo de observación:
+
+   ```bash
+   npm run test:watch
+   ```
 
 ---
 
