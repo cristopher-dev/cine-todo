@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { Movie } from '../types';
 
 interface MovieFormProps {
@@ -8,7 +8,7 @@ interface MovieFormProps {
   onCancelEdit?: () => void;
 }
 
-const MovieForm: React.FC<MovieFormProps> = ({ onMovieSubmit, initialData, isEditMode, onCancelEdit }) => {
+const MovieForm = ({ onMovieSubmit, initialData, isEditMode, onCancelEdit }: MovieFormProps) => {
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [poster, setPoster] = useState('');

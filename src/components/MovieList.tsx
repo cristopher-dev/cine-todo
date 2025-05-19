@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Movie } from '../types';
 
 interface MovieListProps {
@@ -7,7 +6,7 @@ interface MovieListProps {
   onEditMovie: (movie: Movie) => void;
 }
 
-const MovieList: React.FC<MovieListProps> = ({ movies, onDeleteMovie, onEditMovie }) => {
+const MovieList = ({ movies, onDeleteMovie, onEditMovie }: MovieListProps) => {
   if (movies.length === 0) {
     return <p>No hay películas en tu lista. ¡Agrega algunas!</p>;
   }
@@ -16,7 +15,6 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onDeleteMovie, onEditMovi
     <ul className="movie-list">
       {movies.map((movie) => (
         <li key={movie.id} className="movie-item">
-          <>
             <img src={movie.poster} alt={movie.title} />
             <div className="movie-details">
               <h2>{movie.title}</h2>
@@ -26,7 +24,6 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onDeleteMovie, onEditMovi
               <button onClick={() => onEditMovie(movie)}>Editar</button>
               <button onClick={() => onDeleteMovie(movie.id)}>Eliminar</button>
             </div>
-          </>
         </li>
       ))}
     </ul>

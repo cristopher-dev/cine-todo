@@ -215,3 +215,14 @@
     flex-grow: 1; /* Para que los botones ocupen espacio similar */
   }
 }
+
+/* Estilos para los botones del formulario */
+.form-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel-button {
+  background-color: #dc3545 !important;
+  color: white !important;
+}
