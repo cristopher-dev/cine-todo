@@ -6,20 +6,37 @@ import MovieList from './components/MovieList.tsx';
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false); // Nuevo estado para rastrear la carga inicial
   const [sortOrder, setSortOrder] = useState<'alphabetical' | 'year'>('alphabetical');
   const [searchTerm, setSearchTerm] = useState('');
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null); // Estado para la película en edición
 
   useEffect(() => {
+    console.log("Intentando cargar películas desde localStorage...");
     const storedMovies = localStorage.getItem('movies');
     if (storedMovies) {
-      setMovies(JSON.parse(storedMovies));
+      try {
+        const parsedMovies = JSON.parse(storedMovies);
+        console.log("Películas parseadas correctamente:", parsedMovies);
+        setMovies(parsedMovies);
+      } catch (error) {
+        console.error("Error al parsear películas desde localStorage:", error);
+        // Opcional: limpiar el item corrupto para prevenir errores futuros
+        // localStorage.removeItem('movies');
+      }
+    } else {
+      console.log("No se encontraron películas en localStorage.");
     }
+    setIsLoaded(true); // Indicar que el intento de carga ha finalizado
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('movies', JSON.stringify(movies));
-  }, [movies]);
+    if (isLoaded) { // Solo guardar en localStorage si la carga inicial se ha intentado
+      console.log("Intentando guardar películas en localStorage:", movies);
+      localStorage.setItem('movies', JSON.stringify(movies));
+      console.log("Películas guardadas en localStorage.");
+    }
+  }, [movies, isLoaded]); // Ejecutar cuando movies o isLoaded cambie
 
   const addMovie = useCallback((movie: Omit<Movie, 'id'>) => {
     setMovies(prevMovies => [...prevMovies, { ...movie, id: crypto.randomUUID() }]);
