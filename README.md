@@ -1,4 +1,4 @@
-# Test Técnico – Desarrollador React
+# cine-todo – Desarrollador React
 
 Esta es una aplicación de React que permite visualizar y organizar tus películas favoritas.
 
@@ -38,7 +38,7 @@ Esta es una aplicación de React que permite visualizar y organizar tus películ
 2. **Navegar a la carpeta del proyecto:**
 
    ```bash
-   cd "Test-Tecnico–Desarrollador React/my-movie-app"
+   cd "cine-todo"
    ```
 
 3. **Instalar las dependencias:**
