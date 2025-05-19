@@ -1,0 +1,253 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.App {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* Para responsiveness */
+}
+
+.search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px; /* Espacio entre búsqueda y selector */
+  flex-grow: 1; /* Para que ocupe el espacio disponible */
+  min-width: 200px; /* Ancho mínimo para evitar que se encoja demasiado */
+  margin-bottom: 10px; /* Espacio inferior en pantallas pequeñas */
+}
+
+.controls > div {
+    display: flex;
+    align-items: center;
+}
+
+.controls label {
+  margin-right: 10px;
+}
+
+.controls select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.movie-form {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.movie-form div {
+  margin-bottom: 10px;
+}
+
+.movie-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.movie-form input[type="text"] {
+  width: calc(100% - 22px); /* Ajustar por padding y borde */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.movie-form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.movie-form button:hover {
+  background-color: #0056b3;
+}
+
+.movie-list {
+  list-style: none;
+  padding: 0;
+}
+
+.movie-item {
+  display: flex;
+  align-items: flex-start; /* Alinea items al inicio para mejor layout con MovieForm */
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.movie-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.movie-item img {
+  width: 100px;
+  height: 150px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.movie-details {
+  flex-grow: 1;
+}
+
+.movie-details h2 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 1.5em;
+}
+
+.movie-details p {
+  margin: 0;
+  color: #555;
+}
+
+.movie-actions button {
+  margin-left: 10px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.movie-actions button:hover {
+  background-color: #e0e0e0;
+}
+
+.movie-actions button:first-child {
+    background-color: #28a745; /* Verde para editar */
+    color: white;
+    border-color: #28a745;
+}
+
+.movie-actions button:first-child:hover {
+    background-color: #218838;
+}
+
+.movie-actions button + button {
+    background-color: #dc3545; /* Rojo para eliminar */
+    color: white;
+    border-color: #dc3545;
+}
+
+.movie-actions button + button:hover {
+    background-color: #c82333;
+}
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid red;
+  border-radius: 4px;
+  background-color: #ffe0e0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .controls > div {
+    justify-content: space-between; /* Para que el label y select se separen */
+    width: 100%; /* Ocupar todo el ancho */
+  }
+
+  .movie-item {
+    flex-direction: column;
+    align-items: center; /* Centrar contenido en vista de columna */
+  }
+
+  .movie-item img {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+
+  .movie-details {
+    text-align: center; /* Centrar texto de detalles */
+    margin-bottom: 10px;
+  }
+
+  .movie-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-around; /* Distribuir botones */
+  }
+
+  .movie-actions button {
+    margin-left: 5px;
+    margin-right: 5px;
+    flex-grow: 1; /* Para que los botones ocupen espacio similar */
+  }
+}
