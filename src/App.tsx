@@ -11,30 +11,24 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null); // Estado para la película en edición
 
-  // useEffect para localStorage (sin cambios)
+  // useEffect para localStorage
   useEffect(() => {
-    console.log("Intentando cargar películas desde localStorage...");
     const storedMovies = localStorage.getItem('movies');
     if (storedMovies) {
       try {
         const parsedMovies = JSON.parse(storedMovies);
-        console.log("Películas parseadas correctamente:", parsedMovies);
         setMovies(parsedMovies);
       } catch (error) {
         console.error("Error al parsear películas desde localStorage:", error);
         // localStorage.removeItem('movies');
       }
-    } else {
-      console.log("No se encontraron películas en localStorage.");
     }
     setIsLoaded(true);
   }, []);
 
   useEffect(() => {
     if (isLoaded) {
-      console.log("Intentando guardar películas en localStorage:", movies);
       localStorage.setItem('movies', JSON.stringify(movies));
-      console.log("Películas guardadas en localStorage.");
     }
   }, [movies, isLoaded]);
 

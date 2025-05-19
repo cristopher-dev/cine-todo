@@ -9,9 +9,7 @@ interface MovieFormProps {
 }
 
 const MovieForm: React.FC<MovieFormProps> = ({ onMovieSubmit, initialData, isEditMode, onCancelEdit }) => {
-  // Añadir este log para depuración
-  console.log('[MovieForm] Props received:', { onMovieSubmit, initialData, isEditMode, onCancelEdit });
-  console.log('[MovieForm] typeof onMovieSubmit:', typeof onMovieSubmit);
+  // Inicializar los estados
 
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
@@ -51,12 +49,10 @@ const MovieForm: React.FC<MovieFormProps> = ({ onMovieSubmit, initialData, isEdi
       return;
     }
     setError('');
-    // Log de depuración y guarda
-    console.log('[MovieForm] In handleSubmit, typeof onMovieSubmit:', typeof onMovieSubmit);
+    // Guarda los datos de la película
     if (typeof onMovieSubmit === 'function') {
       onMovieSubmit({ title, year, poster });
     } else {
-      console.error('[MovieForm] onMovieSubmit is not a function! Value:', onMovieSubmit);
       setError('Error interno: La acción de guardar no está disponible en este momento.');
     }
     // La limpieza del formulario ahora se maneja con el cambio de 'key' en App.tsx
