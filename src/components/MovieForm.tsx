@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
-import type { Movie } from '../types'; // Use type-only import
+import React, { useState, useEffect } from 'react';
+import type { Movie } from '../types';
 
 interface MovieFormProps {
-  onAddMovie: (movie: Omit<Movie, 'id'>) => void;
-  initialData?: Omit<Movie, 'id'>;
+  onMovieSubmit: (movie: Omit<Movie, 'id'>) => void;
+  initialData?: Movie; // Permitir que initialData sea Movie completa (con id)
   isEditMode?: boolean;
+  onCancelEdit?: () => void; // Nueva prop para cancelar edición
 }
 
-const MovieForm: React.FC<MovieFormProps> = ({ onAddMovie, initialData, isEditMode }) => {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [year, setYear] = useState(initialData?.year || '');
-  const [poster, setPoster] = useState(initialData?.poster || '');
+const MovieForm: React.FC<MovieFormProps> = ({ onMovieSubmit, initialData, isEditMode, onCancelEdit }) => {
+  const [title, setTitle] = useState('');
+  const [year, setYear] = useState('');
+  const [poster, setPoster] = useState('');
   const [error, setError] = useState('');
+
+  // Efecto para actualizar el formulario cuando initialData cambia (para edición)
+  useEffect(() => {
+    if (initialData) {
+      setTitle(initialData.title || '');
+      setYear(initialData.year || '');
+      setPoster(initialData.poster || '');
+      setError(''); // Limpiar errores al cargar nuevos datos iniciales
+    } else {
+      // Limpiar formulario si no hay datos iniciales (ej. al cancelar edición o agregar nuevo)
+      setTitle('');
+      setYear('');
+      setPoster('');
+      setError('');
+    }
+  }, [initialData]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,12 +47,9 @@ const MovieForm: React.FC<MovieFormProps> = ({ onAddMovie, initialData, isEditMo
       return;
     }
     setError('');
-    onAddMovie({ title, year, poster });
-    if (!isEditMode) {
-        setTitle('');
-        setYear('');
-        setPoster('');
-    }
+    onMovieSubmit({ title, year, poster });
+    // La limpieza del formulario ahora se maneja con el cambio de 'key' en App.tsx
+    // o con el useEffect si initialData se vuelve undefined.
   };
 
   return (
@@ -68,7 +82,14 @@ const MovieForm: React.FC<MovieFormProps> = ({ onAddMovie, initialData, isEditMo
           onChange={(e) => setPoster(e.target.value)}
         />
       </div>
-      <button type="submit">{isEditMode ? 'Guardar Cambios' : 'Agregar Película'}</button>
+      <div className="form-buttons">
+        <button type="submit">{isEditMode ? 'Guardar Cambios' : 'Agregar Película'}</button>
+        {isEditMode && onCancelEdit && (
+          <button type="button" onClick={onCancelEdit} className="cancel-button">
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 };

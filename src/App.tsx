@@ -8,6 +8,7 @@ function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [sortOrder, setSortOrder] = useState<'alphabetical' | 'year'>('alphabetical');
   const [searchTerm, setSearchTerm] = useState('');
+  const [editingMovie, setEditingMovie] = useState<Movie | null>(null); // Estado para la película en edición
 
   useEffect(() => {
     const storedMovies = localStorage.getItem('movies');
@@ -21,15 +22,36 @@ function App() {
   }, [movies]);
 
   const addMovie = (movie: Omit<Movie, 'id'>) => {
-    setMovies([...movies, { ...movie, id: crypto.randomUUID() }]);
+    setMovies(prevMovies => [...prevMovies, { ...movie, id: crypto.randomUUID() }]);
   };
 
   const deleteMovie = (id: string) => {
-    setMovies(movies.filter(movie => movie.id !== id));
+    setMovies(prevMovies => prevMovies.filter(movie => movie.id !== id));
   };
 
-  const editMovie = (updatedMovie: Movie) => {
-    setMovies(movies.map(movie => movie.id === updatedMovie.id ? updatedMovie : movie));
+  // Renombrada para evitar conflicto con la prop de MovieList y para claridad
+  const editMovieInternal = (updatedMovie: Movie) => {
+    setMovies(prevMovies => prevMovies.map(movie => movie.id === updatedMovie.id ? updatedMovie : movie));
+  };
+
+  // Maneja el envío del formulario tanto para agregar como para editar
+  const handleFormSubmit = (movieData: Omit<Movie, 'id'>) => {
+    if (editingMovie) {
+      editMovieInternal({ ...movieData, id: editingMovie.id });
+      setEditingMovie(null); // Sale del modo edición, resetea el formulario vía 'key'
+    } else {
+      addMovie(movieData);
+    }
+  };
+
+  // Inicia el modo edición para una película
+  const handleStartEdit = (movie: Movie) => {
+    setEditingMovie(movie);
+  };
+
+  // Cancela el modo edición
+  const handleCancelEdit = () => {
+    setEditingMovie(null); // Sale del modo edición, resetea el formulario vía 'key'
   };
 
   const filteredMovies = movies.filter(movie => 
@@ -45,8 +67,14 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Mis Películas Favoritas</h1>
-      <MovieForm onAddMovie={addMovie} />
+      <h1>{editingMovie ? 'Editar Película' : 'Mis Películas Favoritas'}</h1>
+      <MovieForm
+        key={editingMovie ? editingMovie.id : 'add-form'} // Clave para forzar reseteo del estado interno del formulario
+        onMovieSubmit={handleFormSubmit} // Prop unificada para submit
+        initialData={editingMovie || undefined} // Datos iniciales para edición
+        isEditMode={!!editingMovie} // Indica si está en modo edición
+        onCancelEdit={handleCancelEdit} // Prop para manejar la cancelación
+      />
       <div className="controls">
         <input 
           type="text" 
@@ -63,7 +91,11 @@ function App() {
           </select>
         </div>
       </div>
-      <MovieList movies={sortedMovies} onDeleteMovie={deleteMovie} onEditMovie={editMovie} />
+      <MovieList
+        movies={sortedMovies}
+        onDeleteMovie={deleteMovie}
+        onEditMovie={handleStartEdit} // Prop para iniciar la edición
+      />
     </div>
   );
 }
