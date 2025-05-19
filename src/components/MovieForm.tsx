@@ -3,28 +3,24 @@ import type { Movie } from '../types';
 
 interface MovieFormProps {
   onMovieSubmit: (movie: Omit<Movie, 'id'>) => void;
-  initialData?: Movie; // Permitir que initialData sea Movie completa (con id)
+  initialData?: Movie;
   isEditMode?: boolean;
-  onCancelEdit?: () => void; // Nueva prop para cancelar edición
+  onCancelEdit?: () => void;
 }
 
 const MovieForm: React.FC<MovieFormProps> = ({ onMovieSubmit, initialData, isEditMode, onCancelEdit }) => {
-  // Inicializar los estados
-
   const [title, setTitle] = useState('');
   const [year, setYear] = useState('');
   const [poster, setPoster] = useState('');
   const [error, setError] = useState('');
 
-  // Efecto para actualizar el formulario cuando initialData cambia (para edición)
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title || '');
       setYear(initialData.year || '');
       setPoster(initialData.poster || '');
-      setError(''); // Limpiar errores al cargar nuevos datos iniciales
+      setError('');
     } else {
-      // Limpiar formulario si no hay datos iniciales (ej. al cancelar edición o agregar nuevo)
       setTitle('');
       setYear('');
       setPoster('');
@@ -55,8 +51,6 @@ const MovieForm: React.FC<MovieFormProps> = ({ onMovieSubmit, initialData, isEdi
     } else {
       setError('Error interno: La acción de guardar no está disponible en este momento.');
     }
-    // La limpieza del formulario ahora se maneja con el cambio de 'key' en App.tsx
-    // o con el useEffect si initialData se vuelve undefined.
   };
 
   return (
