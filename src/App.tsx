@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import type { Movie } from './types.ts';
 import MovieForm from './components/MovieForm.tsx';
@@ -21,38 +21,38 @@ function App() {
     localStorage.setItem('movies', JSON.stringify(movies));
   }, [movies]);
 
-  const addMovie = (movie: Omit<Movie, 'id'>) => {
+  const addMovie = useCallback((movie: Omit<Movie, 'id'>) => {
     setMovies(prevMovies => [...prevMovies, { ...movie, id: crypto.randomUUID() }]);
-  };
+  }, []);
 
-  const deleteMovie = (id: string) => {
+  const deleteMovie = useCallback((id: string) => {
     setMovies(prevMovies => prevMovies.filter(movie => movie.id !== id));
-  };
+  }, []);
 
   // Renombrada para evitar conflicto con la prop de MovieList y para claridad
-  const editMovieInternal = (updatedMovie: Movie) => {
+  const editMovieInternal = useCallback((updatedMovie: Movie) => {
     setMovies(prevMovies => prevMovies.map(movie => movie.id === updatedMovie.id ? updatedMovie : movie));
-  };
+  }, []);
 
   // Maneja el envío del formulario tanto para agregar como para editar
-  const handleFormSubmit = (movieData: Omit<Movie, 'id'>) => {
+  const handleFormSubmit = useCallback((movieData: Omit<Movie, 'id'>) => {
     if (editingMovie) {
       editMovieInternal({ ...movieData, id: editingMovie.id });
       setEditingMovie(null); // Sale del modo edición, resetea el formulario vía 'key'
     } else {
       addMovie(movieData);
     }
-  };
+  }, [editingMovie, addMovie, editMovieInternal]);
 
   // Inicia el modo edición para una película
-  const handleStartEdit = (movie: Movie) => {
+  const handleStartEdit = useCallback((movie: Movie) => {
     setEditingMovie(movie);
-  };
+  }, [setEditingMovie]);
 
   // Cancela el modo edición
-  const handleCancelEdit = () => {
+  const handleCancelEdit = useCallback(() => {
     setEditingMovie(null); // Sale del modo edición, resetea el formulario vía 'key'
-  };
+  }, [setEditingMovie]);
 
   const filteredMovies = movies.filter(movie => 
     movie.title.toLowerCase().includes(searchTerm.toLowerCase())
